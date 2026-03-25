@@ -1,0 +1,4 @@
+﻿Analyzing invoice_scanner...                                    
+
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\invoice_detail\presentation\invoice_detail_page.dart:134:41 - deprecated_member_use
+

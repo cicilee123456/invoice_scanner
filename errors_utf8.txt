@@ -1,0 +1,49 @@
+﻿Analyzing invoice_scanner...
+
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:14:31 - Undefined name 'StateNotifierProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:19:37 - Classes can only extend other classes. Try specifying a different superclass, or removing the extends clause. - extends_non_class
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:22:31 - No associated positional super constructor parameter. Try using a normal parameter, or adding more positional parameters to the super constructor. - super_formal_parameter_without_associated_positional
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:31:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:31:13 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:43:67 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:43:89 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:46:26 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_list\presentation\invoice_list_provider.dart:12:29 - The function 'StateNotifierProvider' isn't defined. Try importing the library that defines 'StateNotifierProvider', correcting the name to the name of an existing function, or defining a function named 'StateNotifierProvider'. - undefined_function
+  error - lib\features\invoice_list\presentation\invoice_list_provider.dart:18:35 - Classes can only extend other classes. Try specifying a different superclass, or removing the extends clause. - extends_non_class
+  error - lib\features\invoice_list\presentation\invoice_list_provider.dart:21:46 - Too many positional arguments: 0 expected, but 1 found. Try removing the extra arguments. - extra_positional_arguments
+  error - lib\features\invoice_list\presentation\invoice_list_provider.dart:30:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_list\presentation\invoice_list_provider.dart:43:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\invoice_list\presentation\invoice_list_provider.dart:46:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:14:25 - The function 'StateNotifierProvider' isn't defined. Try importing the library that defines 'StateNotifierProvider', correcting the name to the name of an existing function, or defining a function named 'StateNotifierProvider'. - undefined_function
+  error - lib\features\scanner\presentation\scanner_provider.dart:38:31 - Classes can only extend other classes. Try specifying a different superclass, or removing the extends clause. - extends_non_class
+  error - lib\features\scanner\presentation\scanner_provider.dart:42:45 - Too many positional arguments: 0 expected, but 1 found. Try removing the extra arguments. - extra_positional_arguments
+  error - lib\features\scanner\presentation\scanner_provider.dart:60:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:60:15 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:68:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:68:15 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:75:9 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:75:17 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:95:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:95:15 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:98:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:98:15 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - lib\features\scanner\presentation\scanner_provider.dart:104:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+   info - lib\core\constants\app_constants.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\core\theme\app_theme.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\core\utils\date_utils.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\invoice_detail\presentation\invoice_detail_page.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\invoice_detail\presentation\invoice_detail_provider.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\invoice_list\presentation\invoice_list_page.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\invoice_list\presentation\invoice_list_provider.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\invoice_list\widgets\invoice_card.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\main\presentation\main_screen.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\scanner\data\invoice_parser.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\scanner\data\ocr_service.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\scanner\domain\entities\invoice_entity.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\scanner\presentation\scanner_page.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\scanner\presentation\scanner_provider.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\main.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\shared\services\local_storage_service.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\shared\widgets\custom_app_bar.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+
+45 issues found.

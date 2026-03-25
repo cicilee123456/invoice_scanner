@@ -1,0 +1,1 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart'; class Notif extends FamilyNotifier<int, String> { @override int build(String arg) => 0; } final p = NotifierProvider.family<Notif, int, String>(Notif.new); void main(){}
