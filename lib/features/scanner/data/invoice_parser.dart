@@ -93,7 +93,7 @@ class InvoiceParser {
 
     // 4. 解析消費金額 (Amount)
     // 尋找「合計」、「總計」、「NT$」或「$」後方跟著的數字字串 (可能含有千分位逗號)
-    final amountRegex = RegExp(r'(?:合計|總計|NT\$|\$)\s*:?\s*(\d+(?:,\d+)*(?:\.\d+)?)');
+    final amountRegex = RegExp(r'(?:合計|總計|經計|NT\$|\$)\s*:?\s*(\d+(?:,\d+)*(?:\.\d+)?)');
     final amtMatch = amountRegex.firstMatch(ocrText);
     if (amtMatch != null) {
       try {

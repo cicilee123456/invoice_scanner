@@ -50,4 +50,11 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>我們需要相簿來讀取您的發票截圖</string>
 </dict>
+	<!-- 相機權限 -->
+	<key>NSCameraUsageDescription</key>
+	<string>需要相機權限以掃描發票</string>
+
+	<!-- 相簿權限 -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要相簿權限以從相簿導入發票圖片</string>
 </plist>

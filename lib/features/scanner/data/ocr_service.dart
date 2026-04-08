@@ -1,33 +1,45 @@
-/// 光學字元辨識服務 (OCR Service)
-/// 
-/// 負責呼叫 Google ML Kit 進行單機端的文字辨識。
-/// 此實作支援本地端辨識，不需將圖片上傳伺服器即可完成。
-
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:http/http.dart' as http;
 
 class OcrService {
-  // 初始化 TextRecognizer 並指定使用繁體中文等亞洲語系的腳本
   final TextRecognizer _textRecognizer = TextRecognizer(script: TextRecognitionScript.chinese);
 
-  /// 輸入圖片路徑，回傳圖片中所有辨識出的純文字內容字串
-  /// [imagePath] 儲存在手機本地端的相片絕對路徑
   Future<String> processImage(String imagePath) async {
+    debugPrint("--- 開始處理圖片 ---");
+
+    // 1. 先執行 OCR 辨識 (確保就算網路斷了也能拿到文字)
+    String resultText = "";
     try {
-      // 1. 建立 ML Kit 需要的影像格式
+      debugPrint("正在啟動本地 ML Kit 辨識...");
       final inputImage = InputImage.fromFilePath(imagePath);
-      // 2. 觸發影像辨識引擎進行處理
       final recognizedText = await _textRecognizer.processImage(inputImage);
-      // 3. 回傳文字結果
-      return recognizedText.text;
+      resultText = recognizedText.text;
+      debugPrint("本地辨識完成，字數: ${resultText.length}");
     } catch (e) {
-      // 若中途發生底層錯誤，僅在控制台印出並回傳空字串，防止 App 崩潰
-      debugPrint("OCR Error: $e");
-      return "";
+      debugPrint("本地 OCR 失敗: $e");
     }
+
+    // 2. 嘗試背景上傳給 PHP (這部分失敗也沒關係，不影響辨識結果)
+    try {
+      // 請在此處確認你的 IP 是否正確，如果不確定，可以先註解掉這段
+      var uri = Uri.parse("http://172.20.10.2/project_api/api.php"); 
+      var request = http.MultipartRequest('POST', uri);
+      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+      request.fields['type'] = '二值化';
+
+      debugPrint("嘗試背景上傳伺服器...");
+      // 把超時設短一點，才不會等太久
+      await http.Response.fromStream(await request.send()).timeout(const Duration(seconds: 2));
+      debugPrint("伺服器連線成功");
+    } catch (e) {
+      debugPrint("伺服器連線失敗 (這不影響辨識結果): $e");
+    }
+
+    return resultText;
   }
 
-  /// 釋放辨識引擎資源，避免記憶體洩漏 (Memory leak)
   void dispose() {
     _textRecognizer.close();
   }
