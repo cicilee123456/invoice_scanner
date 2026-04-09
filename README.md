@@ -1,325 +1,41 @@
-# 📱 Invoice Scanner - 發票掃描 APP
+# 🧾 發票智慧辨識系統 (Invoice Scanner App)
 
-> 使用 Google ML Kit 進行智能發票辨識的 Flutter 應用程式
+這是一個基於 **Flutter** 開發的智慧發票管理工具，結合 **Google ML Kit** 與 **後端 Python 影像處理技術**，能自動從發票照片中擷取關鍵資訊。
 
----
+## 🎯 作業目標達成說明
+本專案已完整實作以下核心功能：
+- **OCR 辨識**：整合 `google_mlkit_text_recognition` 進行中文與數字辨識。
+- **影像前處理**：實作灰階、降噪、自適應二值化處理。
+- **自動擷取**：自動解析發票號碼、日期與消費金額。
+- **資料儲存**：辨識結果可儲存於 App 內進行管理，並可產出紀錄。
 
-## ✨ 功能特色
+## 🛠️ 技術實作與檔案對照
 
-- 📸 **即時相機掃描** - 自動對焦的相機介面，支援閃光燈控制
-- 🖼️ **相簿選取** - 從手機圖庫選擇發票照片進行辨識
-- 🤖 **AI 文字辨識** - 使用 Google ML Kit 離線 OCR 技術
-- 🎯 **智能解析** - 自動萃取發票號碼、日期、店家、金額
-- ✏️ **手動修正** - 可編輯辨識錯誤的欄位
-- 💾 **本地儲存** - 發票資料與照片永久保存在裝置
-- 📋 **清單管理** - 瀏覽所有已儲存的發票記錄
-- 123
----
+### 1. 影像前處理 (Image Pre-processing)
+**對應檔案：** `binarize.py` (後端 Python)
+為了符合技術要求，本專案將圖片傳送至後端進行優化，流程如下：
+- **灰階轉換**：減少運算量。
+- **自適應二值化 (Adaptive Thresholding)**：解決光線不均問題，提升辨識率。
+- **形態學操作**：連接斷裂文字。
 
-## 🏗️ 技術架構
+### 2. 欄位自動解析 (Invoice Parsing)
+**對應檔案：** `lib/features/scanner/data/invoice_parser.dart`
+使用 **Regular Expression (正規表達式)** 進行資料擷取：
+- **關鍵字辨識**：自動匹配「總計」、「經計」、「金額」等欄位抓取消費數字。
 
-### 核心技術棧
+## 📸 前處理效果展示 (對比截圖)
 
-| 技術 | 用途 |
-|------|------|
-| ![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white) | 跨平台 UI 框架 |
-| ![Riverpod](https://img.shields.io/badge/Riverpod-0175C2?logo=flutter&logoColor=white) | 狀態管理 |
-| ![Google ML Kit](https://img.shields.io/badge/ML_Kit-4285F4?logo=google&logoColor=white) | 文字辨識引擎 |
-| ![Go Router](https://img.shields.io/badge/Go_Router-02569B?logo=flutter&logoColor=white) | 導航路由管理 |
-| ![Material 3](https://img.shields.io/badge/Material_3-757575?logo=material-design&logoColor=white) | 設計系統 |
+| 原始發票照片 | 前處理後影像 (二值化) | App 自動填入結果 |
+| :---: | :---: | :---: |
+| <img width="200" src="https://github.com/user-attachments/assets/03cd02d5-c7ff-4e55-b4b2-e84e7c392fea" /> | <img width="200" src="https://github.com/user-attachments/assets/2451580b-3618-43e0-b878-9b44bec0abe3" /> | <img width="200" src="https://github.com/user-attachments/assets/df68e26f-6d31-4a92-bf03-546273e37577" /> |
 
-### 依賴套件
 
-```yaml
-dependencies:
-  flutter_riverpod: ^2.6.1           # 狀態管理
-  go_router: ^14.6.2                 # 路由管理
-  google_mlkit_text_recognition: ^0.13.1  # OCR 辨識
-  camera: ^0.11.0+2                  # 相機功能
-  image_picker: ^1.1.2               # 圖片選擇
-  path_provider: ^2.1.5              # 檔案路徑
-  uuid: ^4.5.1                       # 唯一 ID 生成
-```
+> **說明：** 透過前處理優化，可大幅提升特殊字體（如初代花山拉麵）與模糊發票的辨識正確率。
 
 ---
 
-## 🔄 完整執行流程
-
-```
-📸 使用者拍照 / 選取圖片
-         ↓
-┌────────────────────────────────────────────┐
-│  scanner_page.dart (UI 層)                 │
-│  ├─ 相機預覽介面                            │
-│  ├─ 拍照按鈕觸發                            │
-│  └─ 圖庫選取觸發                            │
-└────────────────────────────────────────────┘
-         ↓
-┌────────────────────────────────────────────┐
-│  scanner_provider.dart (狀態管理層)        │
-│  └─ processCapturedImage(imagePath)       │
-└────────────────────────────────────────────┘
-         ↓
-┌────────────────────────────────────────────┐
-│  ocr_service.dart (OCR 辨識層)            │
-│  ├─ 呼叫 Google ML Kit                     │
-│  └─ processImage() → 回傳原始文字          │
-└────────────────────────────────────────────┘
-         ↓
-┌────────────────────────────────────────────┐
-│  invoice_parser.dart (解析層)             │
-│  ├─ 正規表達式匹配                          │
-│  ├─ 萃取：發票號碼、日期、店名、金額        │
-│  └─ parse() → ParsedInvoiceResult         │
-└────────────────────────────────────────────┘
-         ↓
-┌────────────────────────────────────────────┐
-│  invoice_entity.dart (資料層)             │
-│  └─ 建立 InvoiceEntity 物件                │
-└────────────────────────────────────────────┘
-         ↓
-         跳轉至明細頁面
-         ↓
-┌────────────────────────────────────────────┐
-│  invoice_detail_page.dart (編輯頁面)      │
-│  ├─ 顯示辨識結果                            │
-│  ├─ 允許手動修正                            │
-│  └─ 使用者點擊 ✓ 儲存按鈕                   │
-└────────────────────────────────────────────┘
-         ↓
-┌────────────────────────────────────────────┐
-│  invoice_detail_provider.dart (業務層)    │
-│  └─ save() → 協調儲存流程                   │
-└────────────────────────────────────────────┘
-         ↓
-┌────────────────────────────────────────────┐
-│  local_storage_service.dart (儲存層)      │
-│  ├─ copyImageToAppDirectory()             │
-│  │   → 複製圖片到永久目錄                   │
-│  └─ saveInvoice()                          │
-│      → 存成 JSON 檔案                       │
-└────────────────────────────────────────────┘
-         ↓
-    💾 儲存完成
-```
-
----
-
-## 📂 專案結構
-
-```
-lib/
-├── core/                          # 核心通用模組
-│   ├── constants/                 # 常數定義
-│   ├── theme/                     # 主題配置
-│   └── utils/                     # 工具函式
-│
-├── features/                      # 功能模組（依功能拆分）
-│   ├── main/                      # 主頁面與底部導航
-│   │   └── presentation/
-│   │       └── main_screen.dart
-│   │
-│   ├── scanner/                   # 掃描功能
-│   │   ├── data/
-│   │   │   ├── ocr_service.dart           # Google ML Kit 整合
-│   │   │   └── invoice_parser.dart        # 文字解析邏輯
-│   │   ├── domain/
-│   │   │   └── entities/
-│   │   │       └── invoice_entity.dart    # 發票資料模型
-│   │   └── presentation/
-│   │       ├── scanner_page.dart          # 相機介面
-│   │       └── scanner_provider.dart      # 狀態管理
-│   │
-│   ├── invoice_detail/            # 發票明細與編輯
-│   │   └── presentation/
-│   │       ├── invoice_detail_page.dart
-│   │       └── invoice_detail_provider.dart
-│   │
-│   └── invoice_list/              # 發票清單
-│       └── presentation/
-│           ├── invoice_list_page.dart
-│           └── invoice_list_provider.dart
-│
-├── shared/                        # 共享元件
-│   ├── services/
-│   │   └── local_storage_service.dart     # 檔案儲存服務
-│   └── widgets/
-│       └── custom_app_bar.dart            # 自訂 AppBar
-│
-└── main.dart                      # 應用程式入口
-```
-
----
-
-## 📄 各檔案的職責
-
-| 檔案 | 位置 | 功能 |
-|------|------|------|
-| `scanner_page.dart` | `features/scanner/presentation/` | 相機 UI，拍照按鈕觸發掃描 |
-| `scanner_provider.dart` | `features/scanner/presentation/` | 協調 OCR 與 Parser 的業務邏輯 |
-| `ocr_service.dart` | `features/scanner/data/` | 呼叫 Google ML Kit 辨識文字 |
-| `invoice_parser.dart` | `features/scanner/data/` | 用正規表達式解析發票欄位 |
-| `invoice_entity.dart` | `features/scanner/domain/entities/` | 定義發票資料結構 |
-| `invoice_detail_page.dart` | `features/invoice_detail/presentation/` | 顯示並編輯發票內容 |
-| `invoice_detail_provider.dart` | `features/invoice_detail/presentation/` | 處理儲存邏輯 |
-| `local_storage_service.dart` | `shared/services/` | 實際寫入檔案系統 |
-
----
-
-## 🎯 OCR 解析規則
-
-### 1️⃣ 發票號碼
-- **正規表達式**: `[A-Za-z]{2}-?\d{8}`
-- **格式**: 2 個英文字母 + 8 個數字
-- **範例**: `AB-12345678` 或 `AB12345678`（自動補上連字號）
-
-### 2️⃣ 發票日期
-- **正規表達式**: `(\d{4})[./-](\d{2})[./-](\d{2})`
-- **支援格式**: `YYYY-MM-DD` / `YYYY/MM/DD` / `YYYY.MM.DD`
-- **範例**: `2026-03-26`
-
-### 3️⃣ 店家名稱
-- **邏輯**: 取得文字的第一個非空白行
-- **範例**: `全家便利商店`
-
-### 4️⃣ 消費金額
-- **正規表達式**: `(?:合計|總計|NT\$|\$)\s*:?\s*(\d+(?:,\d+)*)`
-- **關鍵字**: 合計 / 總計 / NT$ / $
-- **範例**: `合計 1,250` → `1250.0`（自動去除千分位逗號）
-
----
-
-## 💾 資料儲存
-
-### 儲存位置
-
-```
-DocumentsDirectory/invoices/
-├── invoices.json              # 所有發票的 JSON 資料
-└── images/
-    ├── img_{UUID_1}.jpg       # 發票照片 1
-    ├── img_{UUID_2}.jpg       # 發票照片 2
-    └── img_{UUID_3}.jpg       # 發票照片 3
-```
-
-### JSON 結構範例
-
-```json
-[
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "scannedAt": "2026-03-26T14:30:00.000",
-    "imageLocalPath": "/path/to/img_{UUID}.jpg",
-    "invoiceNumber": "AB-12345678",
-    "date": "2026-03-25T00:00:00.000",
-    "merchantName": "全家便利商店",
-    "totalAmount": 150.0,
-    "rawOcrText": "全家便利商店\nAB-12345678\n2026/03/25\n合計 150",
-    "isManuallyEdited": false
-  }
-]
-```
-
----
-
-## 🚀 開始使用
-
-### 環境需求
-
-- Flutter SDK: `>=3.5.4 <4.0.0`
-- Dart SDK: `>=3.5.0`
-- Android: API 21+ (Android 5.0+)
-- iOS: 12.0+
-
-### 安裝與執行
-
-```bash
-# 1. 複製專案
-git clone <repository-url>
-cd invoice_scanner
-
-# 2. 安裝依賴
-flutter pub get
-
-# 3. 執行應用程式
-flutter run
-```
-
-### 權限設定
-
-#### Android (`android/app/src/main/AndroidManifest.xml`)
-```xml
-<uses-permission android:name="android.permission.CAMERA" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-```
-
-#### iOS (`ios/Runner/Info.plist`)
-```xml
-<key>NSCameraUsageDescription</key>
-<string>需要相機權限以掃描發票</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>需要相簿權限以選取發票照片</string>
-```
-
----
-
-## 🛠️ 開發技巧
-
-### 修改 OCR 語言模型
-
-在 `lib/features/scanner/data/ocr_service.dart` 中調整：
-
-```dart
-// 目前使用中文模型（含中文、英文、數字）
-final TextRecognizer _textRecognizer =
-    TextRecognizer(script: TextRecognitionScript.chinese);
-
-// 其他選項：
-// TextRecognitionScript.latin      - 英文
-// TextRecognitionScript.japanese   - 日文
-// TextRecognitionScript.korean     - 韓文
-```
-
-### 自訂解析規則
-
-在 `lib/features/scanner/data/invoice_parser.dart` 中修改正規表達式。
-
----
-
-## 🎨 設計特色
-
-- **Material Design 3** - 使用最新設計規範
-- **暗色模式支援** - 優雅的深色背景相機介面
-- **流暢動畫** - 頁面切換與載入動畫
-- **響應式設計** - 適配不同螢幕尺寸
-
----
-
-## 🙏 致謝
-```
-                       _oo0oo_
-                      o8888888o
-                      88" . "88
-                      (| -_- |)
-                      0\  =  /0
-                    ___/`---'\___
-                  .' \\|     |// '.
-                 / \\|||  :  |||// \
-                / _||||| -:- |||||- \
-               |   | \\\  -  /// |   |
-               | \_|  ''\---/''  |_/ |
-               \  .-\__  '-'  ___/-. /
-             ___'. .'  /--.--\  `. .'___
-          ."" '<  `.___\_<|>_/___.' >' "".
-         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-        \  \ `_.   \_ __\ /__ _/   .-` /  /
-     =====`-.____`.___ \_____/___.-`___.-'=====
-                       `=---='
-
-
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-               佛祖保佑         永無BUG
-```
-
-
+## 🏃 如何安裝與執行
+1. **後端環境**：啟動 XAMPP Apache，確保 `project_api` 資料夾位於 `htdocs`。
+2. **Python 套件**：需安裝 `opencv-python`。
+3. **前端設定**：確認 `ocr_service.dart` 中的 IP 位址（模擬器請用 `10.0.2.2`）。
+4. **執行**：在終端機輸入 `flutter run`。
